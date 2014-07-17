@@ -1,4 +1,4 @@
-plushu-git-receive
+plushu-git-hooking
 ==================
 
-Plugin that handles Git shell commands (specifically receive-pack) and calls a receive hook
+Plugin that handles Git shell commands (specifically receive-pack) and initializes repos with hook scripts
