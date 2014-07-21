@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+set -eo pipefail; [[ $PLUSHU_TRACE ]] && set -x
+
+case "$1" in
+  git-*)
+    repo=$2
+    repo_path=$PLUSHU_ROOT/repos/$repo
+
+    # If we're receiving a pack for a repository that has
+    # not yet been initialized
+    if [[ $1 == "git-receive-pack" && ! -d "$repo_path/hooks" ]]; then
+
+      # Initialize the repo
+      git init --bare "$repo_path" > /dev/null
+
+      # For each hook that a Git server will run when receiving packs
+      for hook in pre-receive update post-receive post-update; do
+
+        # Create a hook script for this repository
+
+        # Note: it's expected that this hook will always be run by a Git shell
+        # invoked by the Plushu shell, with PLUSHU_ROOT defined in the
+        # environment.
+        cat >"$repo_path/hooks/$hook" <<EOF
+#!/usr/bin/env bash
+set -eo pipefail; [[ \$PLUSHU_TRACE ]] && set -x
+
+# Hook initialized for Plushu forwarding by plushu-git-hooking plugin
+"\$PLUSHU_ROOT/lib/runhook" "git-$hook" "$repo" "\$@"
+EOF
+        chmod +x "$repo_path/hooks/$hook"
+      done
+    fi
+
+    # Alter the target repository to our repo root
+    set -- "$1" "$repo_path" "${@:3}"
+
+    # Forward to git-shell
+    git-shell -c "$@"
+    ;;
+esac
