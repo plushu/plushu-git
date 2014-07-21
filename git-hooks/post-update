@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+set -eo pipefail; [[ $PLUSHU_TRACE ]] && set -x
+"$PLUSHU_ROOT/lib/runhook" git-post-update "$@"
