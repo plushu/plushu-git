@@ -3,10 +3,24 @@ set -eo pipefail; [[ $PLUSHU_TRACE ]] && set -x
 
 git_hooks_dir=$PLUSHU_ROOT/plugins/$PLUSHU_PLUGIN_NAME/git-hooks
 
+# git-shell exclusively expects this kind of quoting for its argument.
+# See https://git.kernel.org/cgit/git/git.git/tree/quote.c
+# and https://git.kernel.org/cgit/git/git.git/tree/shell.c
+sq_quote () {
+  echo -n "'"
+  echo -n $1 | sed 's/['\''!]/'\''\\\0'\''/g'
+  echo "'"
+}
+sq_dequote () {
+  echo $1 | xargs -x echo
+}
+
 case "$1" in
   git-*)
-    repo=$2
+    cmd=$1
+    repo=`sq_dequote "$2"`
     repo_path=$PLUSHU_ROOT/repos/$repo
+    arg=`sq_quote "$repo_path"`
 
     # If we're receiving a pack for a repository that has
     # not yet been initialized
@@ -20,10 +34,7 @@ case "$1" in
       ln -s "$git_hooks_dir" "$repo_path/hooks"
     fi
 
-    # Alter the target repository to our repo root
-    set -- "$1" "$repo_path" "${@:3}"
-
     # Forward to git-shell
-    PLUSHU_REPO_NAME=$repo GIT_DIR=$repo_path git-shell -c "$@"
+    PLUSHU_REPO_NAME=$repo GIT_DIR=$repo_path git-shell -c "$cmd $arg"
     ;;
 esac
