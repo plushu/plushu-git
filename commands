@@ -18,7 +18,7 @@ sq_dequote () {
 case "$1" in
   git-*)
     cmd=$1
-    repo=`sq_dequote "$2"`
+    repo=$2
     repo_path=$PLUSHU_ROOT/repos/$repo
     arg=`sq_quote "$repo_path"`
 
