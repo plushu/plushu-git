@@ -7,12 +7,12 @@ git_hooks_dir=$PLUSHU_ROOT/plugins/$PLUSHU_PLUGIN_NAME/git-hooks
 # See https://git.kernel.org/cgit/git/git.git/tree/quote.c
 # and https://git.kernel.org/cgit/git/git.git/tree/shell.c
 sq_quote () {
-  echo -n "'"
-  echo -n $1 | sed 's/['\''!]/'\''\\\0'\''/g'
-  echo "'"
+  printf "'"
+  sed 's/['\''!]/'\''\\\0'\''/g' <<<"$1"
+  printf "'\n"
 }
 sq_dequote () {
-  echo $1 | xargs -x echo
+  xargs -x printf '%s\n' <<<"$1"
 }
 
 case "$1" in
