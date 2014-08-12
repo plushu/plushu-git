@@ -5,7 +5,7 @@ case "$1" in
   git-receive-pack|git-upload-pack|git-upload-archive)
     cmd=$1
     repo=$2
-    repo_path=$PLUSHU_ROOT/repos/$repo
+    repo_path=$PLUSHU_ROOT/repos/$repo.git
 
     # When receiving pushes
     if [[ $1 == "git-receive-pack" ]]; then

@@ -3,10 +3,9 @@ set -eo pipefail; [[ $PLUSHU_TRACE ]] && set -x
 
 git_hooks_dir=$PLUSHU_ROOT/plugins/$PLUSHU_PLUGIN_NAME/git-hooks
 
-repo_path=$PLUSHU_ROOT/repos/$1
+repo_path=$PLUSHU_ROOT/repos/$1.git
 
-# If we're receiving a pack for a repository that has
-# not yet been initialized
+# If the repo does not yet exist
 if [[ ! -d "$repo_path/hooks" ]]; then
 
   # Initialize the repo
