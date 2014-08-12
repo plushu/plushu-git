@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+set -eo pipefail; [[ $PLUSHU_TRACE ]] && set -x
+
+git_hooks_dir=$PLUSHU_ROOT/plugins/$PLUSHU_PLUGIN_NAME/git-hooks
+
+repo_path=$PLUSHU_ROOT/repos/$1
+
+# If we're receiving a pack for a repository that has
+# not yet been initialized
+if [[ ! -d "$repo_path/hooks" ]]; then
+
+  # Initialize the repo
+  git init --bare "$repo_path" > /dev/null
+
+  # Link to this plugin's hooks
+  rm -rf "$repo_path/hooks"
+  ln -s "$git_hooks_dir" "$repo_path/hooks"
+fi

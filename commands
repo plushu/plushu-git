@@ -1,24 +1,16 @@
 #!/usr/bin/env bash
 set -eo pipefail; [[ $PLUSHU_TRACE ]] && set -x
 
-git_hooks_dir=$PLUSHU_ROOT/plugins/$PLUSHU_PLUGIN_NAME/git-hooks
-
 case "$1" in
   git-receive-pack|git-upload-pack|git-upload-archive)
     cmd=$1
     repo=$2
     repo_path=$PLUSHU_ROOT/repos/$repo
 
-    # If we're receiving a pack for a repository that has
-    # not yet been initialized
-    if [[ $1 == "git-receive-pack" && ! -d "$repo_path/hooks" ]]; then
-
-      # Initialize the repo
-      git init --bare "$repo_path" > /dev/null
-
-      # Link to this plugin's hooks
-      rm -rf "$repo_path/hooks"
-      ln -s "$git_hooks_dir" "$repo_path/hooks"
+    # When receiving pushes
+    if [[ $1 == "git-receive-pack" ]]; then
+      # Initialize the repo if it doesn't already exist
+      "$PLUSHU_ROOT/lib/plushook" create-repo "$repo"
     fi
 
     # Forward to git command
