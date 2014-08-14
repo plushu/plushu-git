@@ -1,11 +1,5 @@
 #!/usr/bin/env bash
 set -eo pipefail; [[ $PLUSHU_TRACE ]] && set -x
 
-# When receiving pushes
-if [[ "$1" == "git-receive-pack" ]]; then
-  # Initialize the repo if it doesn't already exist
-  "$PLUSHU_ROOT/lib/plushook" create-repo "$PLUSHU_REPO_NAME"
-fi
-
 # Execute the command
 "$1" "$2"
