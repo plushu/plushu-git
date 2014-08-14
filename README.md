@@ -1,9 +1,9 @@
-# plushu-git-hooking
+# plushu-git
 
-Plugin that handles Git shell commands (specifically receive-pack) and
-initializes repos with hook scripts
+Plugin that handles Git integration with Plushu, providing the behavior of
+git-shell, and the hooks to initialize repos with Plushu hooks
 
-## Why use hook scripts?
+## Why use hook scripts in the repository?
 
 At first glance, this may seem to be more complicated than necessary. If this
 plugin provides the commands that control all git interactions, why not just
