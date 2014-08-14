@@ -7,13 +7,8 @@ case "$1" in
     repo=$2
     repo_path=$PLUSHU_ROOT/repos/$repo.git
 
-    # When receiving pushes
-    if [[ $1 == "git-receive-pack" ]]; then
-      # Initialize the repo if it doesn't already exist
-      "$PLUSHU_ROOT/lib/plushook" create-repo "$repo"
-    fi
-
-    # Forward to git command
-    PLUSHU_REPO_NAME=$repo GIT_DIR=$repo_path "$cmd" "$repo_path"
+    # Call hook to forward to git command
+    PLUSHU_REPO_NAME=$repo GIT_DIR=$repo_path "$PLUSHU_ROOT/lib/plushook" \
+      git-command "$cmd" "$repo_path"
     ;;
 esac
