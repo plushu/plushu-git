@@ -7,8 +7,11 @@ case "$1" in
     repo=$2
     repo_path=$PLUSHU_ROOT/repos/$repo.git
 
-    # Call hook to forward to git command
+    # Call hook to announce we're going to run the git command
     PLUSHU_REPO_NAME=$repo GIT_DIR=$repo_path "$PLUSHU_ROOT/lib/plushook" \
       git-command "$cmd" "$repo_path"
+
+    # Actually run the git command
+    PLUSHU_REPO_NAME=$repo GIT_DIR=$repo_path "$cmd" "$repo_path"
     ;;
 esac

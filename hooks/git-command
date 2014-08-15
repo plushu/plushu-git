@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-set -eo pipefail; [[ -n "$PLUSHU_TRACE" ]] && set -x
-
-# Execute the command
-"$1" "$2"
