@@ -13,5 +13,8 @@ case "$1" in
 
     # Actually run the git command
     PLUSHU_REPO_NAME=$repo GIT_DIR=$repo_path "$cmd" "$repo_path"
+
+    # Mark that we handled this command
+    export PLUSHU_COMMAND_HANDLED=$1
     ;;
 esac
