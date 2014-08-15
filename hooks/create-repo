@@ -15,3 +15,9 @@ if [[ ! -d "$repo_path/hooks" ]]; then
   rm -rf "$repo_path/hooks"
   ln -s "$git_hooks_dir" "$repo_path/hooks"
 fi
+
+# If running as root
+if [[ "$EUID" == 0 ]]; then
+  # make sure plushu owns the repo
+  chown -R plushu "$repo_path"
+fi
