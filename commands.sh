@@ -1,6 +1,3 @@
-#!/usr/bin/env bash
-set -eo pipefail; [[ -n "$PLUSHU_TRACE" ]] && set -x
-
 case "$1" in
   git-receive-pack|git-upload-pack|git-upload-archive)
     cmd=$1
