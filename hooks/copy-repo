@@ -1,10 +1,16 @@
 #!/usr/bin/env bash
 set -eo pipefail; [[ -n "$PLUSHU_TRACE" ]] && set -x
 
+git_hooks_dir=$PLUSHU_ROOT/plugins/$PLUSHU_PLUGIN_NAME/git-hooks
+
 src_repo_path=$PLUSHU_REPOS_DIR/$1.git
 dest_repo_path=$PLUSHU_REPOS_DIR/$2.git
 
-cp "$src_repo_path" "$dest_repo_path"
+git clone "$src_repo_path" "$dest_repo_path"
+
+# Link to this plugin's hooks
+rm -rf "$dest_repo_path/hooks"
+ln -s "$git_hooks_dir" "$dest_repo_path/hooks"
 
 # If running as root
 if [[ "$EUID" == 0 ]]; then
