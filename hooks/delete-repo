@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+set -eo pipefail; [[ -n "$PLUSHU_TRACE" ]] && set -x
+
+repo_path=$PLUSHU_REPOS_DIR/$1.git
+
+rm -rf "$repo_path"

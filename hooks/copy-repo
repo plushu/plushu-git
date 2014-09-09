@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+set -eo pipefail; [[ -n "$PLUSHU_TRACE" ]] && set -x
+
+src_repo_path=$PLUSHU_REPOS_DIR/$1.git
+dest_repo_path=$PLUSHU_REPOS_DIR/$2.git
+
+cp "$src_repo_path" "$dest_repo_path"
+
+# If running as root
+if [[ "$EUID" == 0 ]]; then
+  # make sure plushu owns the new repo
+  chown -R "$PLUSHU_USER" "$dest_repo_path"
+fi
+
