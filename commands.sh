@@ -1,7 +1,7 @@
 case "$1" in
   git-receive-pack|git-upload-pack|git-upload-archive)
     cmd=$1
-    repo=$2
+    repo=${2%.git}
     repo_path=$PLUSHU_REPOS_DIR/$repo.git
 
     # Call hook to announce we're going to run the git command
