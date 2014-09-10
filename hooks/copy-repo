@@ -6,7 +6,7 @@ git_hooks_dir=$PLUSHU_PLUGIN_PATH/git-hooks
 src_repo_path=$PLUSHU_REPOS_DIR/$1.git
 dest_repo_path=$PLUSHU_REPOS_DIR/$2.git
 
-git clone "$src_repo_path" "$dest_repo_path"
+git clone --bare "$src_repo_path" "$dest_repo_path"
 
 # Link to this plugin's hooks
 rm -rf "$dest_repo_path/hooks"
