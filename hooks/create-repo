@@ -19,5 +19,5 @@ fi
 # If running as root
 if [[ "$EUID" == 0 ]]; then
   # make sure plushu owns the repo
-  chown -R "$PLUSHU_USER" "$repo_path"
+  chown -R "$PLUSHU_USER:" "$repo_path"
 fi

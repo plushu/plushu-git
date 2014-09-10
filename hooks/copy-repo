@@ -15,6 +15,6 @@ ln -s "$git_hooks_dir" "$dest_repo_path/hooks"
 # If running as root
 if [[ "$EUID" == 0 ]]; then
   # make sure plushu owns the new repo
-  chown -R "$PLUSHU_USER" "$dest_repo_path"
+  chown -R "$PLUSHU_USER:" "$dest_repo_path"
 fi
 
