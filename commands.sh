@@ -1,4 +1,4 @@
-case "$1" in
+if [[ -n "$PLUSHU_REPOS_DIR" ]]; then case "$1" in
   git-receive-pack|git-upload-pack|git-upload-archive)
     cmd=$1
     repo=${2%.git}
@@ -14,4 +14,4 @@ case "$1" in
     # Mark that we handled this command
     export PLUSHU_COMMAND_HANDLED=$1
     ;;
-esac
+esac fi
