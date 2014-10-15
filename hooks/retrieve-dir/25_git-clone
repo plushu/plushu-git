@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+set -eo pipefail; [[ -n "$PLUSHU_TRACE" ]] && set -x
+
+# If the directory has not yet been retrieved, and it's a Git remote
+# (if we can read the repo, this will return 0, regardless of "master" status)
+if [[ ! -d "$1" ]] && git ls-remote "$2" master >/dev/null 2>&1; then
+
+  # Retrieve the directory as a Git repo
+  git clone "$2" "$1"
+
+  # Initialize any submodules
+  git submodule update --init --recursive
+
+  # When installing as root, give the plushu user ownership of everything
+  # within the newly-cloned directory
+  if [[ "$EUID" == 0 ]]; then
+    chown -R "$PLUSHU_USER:" "$1"
+  fi
+fi
