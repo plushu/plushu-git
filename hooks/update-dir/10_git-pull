@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+set -eo pipefail; [[ -n "$PLUSHU_TRACE" ]] && set -x
+
+# swap stdout (pipe output) and fd3 (parent stdout)
+exec 6>&1 >&3 3>&6 6>&-
+
+if [[ -d "$1/.git" ]]; then
+  # Pull new revisions
+  cd "$1"
+  git fetch >/dev/null 2>&1
+  old_rev="$(git rev-parse HEAD)"
+  new_rev="$(git rev-parse @{u})"
+
+  # If there are new upstream revisions
+  if [[ "$old_rev" != "$new_rev" ]]; then
+    echo "Updating $2..."
+    # merge them
+    git merge @{u}
+
+    printf "git %s %s\n" "$old_rev" "$new_rev" >&3
+  else
+    printf "git\n" >&3
+  fi
+fi
