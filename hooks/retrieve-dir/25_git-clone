@@ -9,6 +9,7 @@ if [[ ! -d "$1" ]] && git ls-remote "$2" master >/dev/null 2>&1; then
   git clone "$2" "$1"
 
   # Initialize any submodules
+  cd "$1"
   git submodule update --init --recursive
 
   # When installing as root, give the plushu user ownership of everything
