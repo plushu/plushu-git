@@ -1,15 +1,29 @@
 #!/usr/bin/env bash
 set -eo pipefail; [[ -n "$PLUSHU_TRACE" ]] && set -x
 
+url=${2%%#*}
+branch=${2#*#}
+
 # If the directory has not yet been retrieved, and it's a Git remote
 # (if we can read the repo, this will return 0, regardless of "master" status)
-if [[ ! -d "$1" ]] && git ls-remote "$2" master >/dev/null 2>&1; then
+if [[ ! -d "$1" ]] && git ls-remote "$url" master >/dev/null 2>&1; then
+
+  if [[ "$branch" == "$url" ]]; then
+    branch=""
+  fi
 
   # Retrieve the directory as a Git repo
   git clone "$2" "$1"
 
-  # Initialize any submodules
   cd "$1"
+
+  # We have to do this as a checkout after clone because git clone's `-b`
+  # option doesn't support non-branch references at time of writing
+  if [[ -n "$branch" ]]; then
+    git checkout $branch >/dev/null 2>&1
+  fi
+
+  # Initialize any submodules
   git submodule update --init --recursive
 
   # When installing as root, give the plushu user ownership of everything
