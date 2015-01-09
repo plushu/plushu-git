@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+set -eo pipefail; [[ -n "$PLUSHU_TRACE" ]] && set -x
+
+# Run the given command, with the given argument, and the passed
+# environment variables.
+"$@"
